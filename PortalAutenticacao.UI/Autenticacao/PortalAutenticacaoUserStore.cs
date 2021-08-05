@@ -66,12 +66,12 @@ namespace PortalAutenticacao.UI.Autenticacao
 
         public Task<string> GetPasswordHashAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.Senha);
         }
 
         public Task<string> GetUserIdAsync(Usuario user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(user.IdUsuario.ToString());
         }
 
         public Task<string> GetUserNameAsync(Usuario user, CancellationToken cancellationToken)
@@ -105,5 +105,6 @@ namespace PortalAutenticacao.UI.Autenticacao
         {
             throw new NotImplementedException();
         }
+
     }
 }

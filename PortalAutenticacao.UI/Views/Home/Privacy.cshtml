@@ -4,3 +4,12 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+Está autenticado: @User.Identity.IsAuthenticated
+
+@foreach (var item in User.Claims)
+{
+    <ul>
+        <li>@item.Type | @item.Value.</li>
+    </ul>
+}

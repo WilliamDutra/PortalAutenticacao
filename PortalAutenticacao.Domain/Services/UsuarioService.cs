@@ -18,7 +18,38 @@ namespace PortalAutenticacao.Domain.Services
 
         public Usuario Buscar(Usuario entidade)
         {
-            return null;
+            try
+            {
+                using (var Db = new Db().AbrirConexao)
+                {
+
+                    var Parametros = new DynamicParameters();
+
+                    if (!string.IsNullOrEmpty(entidade.Nome))
+                        Parametros.Add("@NOME", entidade.Nome, DbType.String);
+                    else
+                        Parametros.Add("@NOME", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.Email))
+                        Parametros.Add("@EMAIL", entidade.Email, DbType.String);
+                    else
+                        Parametros.Add("@EMAIL", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.Senha))
+                        Parametros.Add("@SENHA", entidade.Senha, DbType.String);
+                    else
+                        Parametros.Add("@SENHA", DBNull.Value, DbType.String);
+
+                    return Db.Query<Usuario>("spListarUsuario", Parametros, commandType: CommandType.StoredProcedure)
+                             .FirstOrDefault();
+                }      
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public List<Usuario> Listar()

@@ -2,11 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using PortalAutenticacao.Entities;
 using PortalAutenticacao.UI.Autenticacao;
@@ -26,17 +31,43 @@ namespace PortalAutenticacao.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddIdentityCore<Usuario>(options => {
+            // Configuração do Microsoft Identity
+            services.AddIdentityCore<Usuario>(options =>
+            {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 3;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
-           })
+            })
+           .AddClaimsPrincipalFactory<PortalAutenticacaoClaimsFactory>()
            .AddUserManager<PortalAutenticacaoUserManager>()
-           .AddUserStore<PortalAutenticacaoUserStore>();
+           //.AddRoleStore<PortalAutenticacaoRoleStore>()
+           .AddUserStore<PortalAutenticacaoUserStore>()
+           .AddDefaultTokenProviders();
+            
+
+
+            // Adicionando autenticação via cookies
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.RequireAuthenticatedSignIn = false;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.Cookie.Name = "PortalAutenticacaoCookie";
+                options.LoginPath = "/Usuario/Login";
+                options.LogoutPath = "/Usuario/Logout";
+                options.AccessDeniedPath = "/Usuario/NaoAutorizado";
+                options.SlidingExpiration = true;
+            });
+
+
+            services.AddScoped<IUserClaimsPrincipalFactory<Usuario>, PortalAutenticacaoClaimsFactory>();
 
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +88,10 @@ namespace PortalAutenticacao.UI
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

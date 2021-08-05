@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PortalAutenticacao.UI.Models;
@@ -23,6 +25,7 @@ namespace PortalAutenticacao.UI.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult Privacy()
         {
             return View();

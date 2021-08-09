@@ -20,11 +20,11 @@ namespace PortalAutenticacao.UI.Autenticacao
                 var usuarioUsuarioNivel = new UsuarioNivelService();
                 var usuarioNivel = new NivelService();
 
-                var NivelId = usuarioUsuarioNivel.Buscar(new UsuarioNivel { FkUsuario = user.IdUsuario }).FkNivel;
-                var NivelNome = usuarioNivel.Buscar(new Nivel { NivelId = NivelId }).Nome;
+                var NivelId = usuarioUsuarioNivel.Buscar(new UsuarioNivel { FkUsuario = user.UsuarioId }).FkNivel;
+                var NivelNome = usuarioNivel.Buscar(new Nivel { IdNivel = NivelId }).Nome;
 
                 var identity = new ClaimsIdentity();
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.IdUsuario.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UsuarioId.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Name, user.Nome));
                 identity.AddClaim(new Claim(ClaimTypes.Role, NivelNome));
                 var principal = new ClaimsPrincipal(identity);

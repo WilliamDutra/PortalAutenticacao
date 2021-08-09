@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "ResetarSenha";
+}
+
+<h1>ResetarSenha</h1>
+
+<form method="POST" action="/Usuario/ResetarSenha">
+    <input type="hidden" name="Token" id="Token" value="@ViewBag.Token" />
+    <input type="hidden" name="Email" id="Email" value="@ViewBag.Email" />
+    <input type="text" name="Senha" id="Senha" />
+    <input type="submit" value="Enviar" />
+</form>

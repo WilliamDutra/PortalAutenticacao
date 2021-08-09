@@ -39,5 +39,52 @@ namespace PortalAutenticacao.UI.Autenticacao
                 return Task.FromResult(true);
             return Task.FromResult(false);
         }
+
+        public override Task<IdentityResult> ResetPasswordAsync(Usuario user, string token, string newPassword)
+        {
+            try
+            {
+                var usuarioService = new UsuarioService();
+                var usuario = usuarioService.Buscar(new Usuario { Email = user.Email });
+
+                if(usuario.TokenResetSenha == token)
+                {
+                    return Task.FromResult(IdentityResult.Success);
+                }
+                else
+                {
+                    return Task.FromResult(IdentityResult.Failed());
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public override Task<IdentityResult> AddToRoleAsync(Usuario user, string role)
+        {
+            try
+            {
+                var nivelUsuarioService = new UsuarioNivelService();
+
+                var nivel = new UsuarioNivel
+                {
+                    FkNivel = Convert.ToInt32(role),
+                    FkUsuario = user.UsuarioId
+                };
+
+                nivelUsuarioService.Salvar(nivel);
+
+                return Task.FromResult(IdentityResult.Success);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

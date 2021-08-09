@@ -17,5 +17,7 @@ namespace PortalAutenticacao.UI.ViewModels
 
         public string Telefone { get; set; }
 
+        public int Nivel { get; set; }
+
     }
 }

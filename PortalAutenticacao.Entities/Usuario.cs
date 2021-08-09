@@ -4,7 +4,7 @@ namespace PortalAutenticacao.Entities
 {
     public class Usuario
     {
-        public int IdUsuario { get; set; }
+        public int UsuarioId { get; set; }
 
         public string Nome { get; set; }
 
@@ -15,6 +15,8 @@ namespace PortalAutenticacao.Entities
         public string Telefone { get; set; }
 
         public string Endereco { get; set; }
+
+        public string TokenResetSenha { get; set; }
 
     }
 }

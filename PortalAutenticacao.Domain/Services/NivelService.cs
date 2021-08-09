@@ -25,7 +25,7 @@ namespace PortalAutenticacao.Domain.Services
 
                     var Parametros = new DynamicParameters();
 
-                    if (entidade.NivelId > 0)
+                    if (entidade.IdNivel > 0)
                         Parametros.Add("@ID", entidade.Nome, DbType.Int32);
                     else
                         Parametros.Add("@ID", DBNull.Value, DbType.Int32);

@@ -71,7 +71,7 @@ namespace PortalAutenticacao.UI.Autenticacao
 
         public Task<string> GetUserIdAsync(Usuario user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.IdUsuario.ToString());
+            return Task.FromResult(user.UsuarioId.ToString());
         }
 
         public Task<string> GetUserNameAsync(Usuario user, CancellationToken cancellationToken)
@@ -106,5 +106,6 @@ namespace PortalAutenticacao.UI.Autenticacao
             throw new NotImplementedException();
         }
 
+        
     }
 }

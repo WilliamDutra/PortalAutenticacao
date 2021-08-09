@@ -13,7 +13,53 @@ namespace PortalAutenticacao.Domain.Services
     {
         public Usuario Alterar(Usuario entidade)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var Db = new Db().AbrirConexao)
+                {
+
+                    var Parametros = new DynamicParameters();
+
+                    if (!string.IsNullOrEmpty(entidade.Nome))
+                        Parametros.Add("@NOME", entidade.Nome, DbType.String);
+                    else
+                        Parametros.Add("@NOME", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.Senha))
+                        Parametros.Add("@SENHA", entidade.Senha, DbType.String);
+                    else
+                        Parametros.Add("@SENHA", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.Telefone))
+                        Parametros.Add("@TELEFONE", entidade.Telefone, DbType.String);
+                    else
+                        Parametros.Add("@TELEFONE", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.Email))
+                        Parametros.Add("@EMAIL", entidade.Email, DbType.String);
+                    else
+                        Parametros.Add("@EMAIL", DBNull.Value, DbType.String);
+
+                    if (!string.IsNullOrEmpty(entidade.TokenResetSenha))
+                        Parametros.Add("@TOKENSENHA", entidade.TokenResetSenha, DbType.String);
+                    else
+                        Parametros.Add("@TOKENSENHA", DBNull.Value, DbType.String);
+
+
+                    Parametros.Add("@ID", entidade.UsuarioId, DbType.Int32);
+
+                    Db.Execute("spAlterarUsuario", Parametros, commandType: CommandType.StoredProcedure);
+
+                    return entidade;
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Usuario Buscar(Usuario entidade)

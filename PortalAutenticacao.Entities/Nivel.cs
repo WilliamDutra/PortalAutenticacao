@@ -6,7 +6,7 @@ namespace PortalAutenticacao.Entities
 {
     public class Nivel
     {
-        public int NivelId { get; set; }
+        public int IdNivel { get; set; }
 
         public string Nome { get; set; }
 

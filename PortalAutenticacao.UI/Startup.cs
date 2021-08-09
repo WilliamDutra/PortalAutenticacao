@@ -52,6 +52,7 @@ namespace PortalAutenticacao.UI
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.RequireAuthenticatedSignIn = false;
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>

@@ -12,5 +12,13 @@
     <label>Senha:</label><input type="text" name="Senha" id="Senha" />
     <label>Telefone:</label><input type="text" name="Telefone" id="Telefone" />
     <label>Endereço:</label><input type="text" name="Endereco" id="Endereco" />
+    <label>Niveis:</label>
+    <select name="Nivel">
+        @foreach (var nivel in ViewBag.Niveis)
+        {
+            <option value="@nivel.IdNivel">@nivel.Nome</option>
+        }
+    </select>
+
     <input type="submit" value="Salvar" />
 </form>

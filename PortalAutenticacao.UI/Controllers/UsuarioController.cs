@@ -14,7 +14,7 @@ using PortalAutenticacao.UI.ViewModels;
 
 namespace PortalAutenticacao.UI.Controllers
 {
-    public class UsuarioController : Controller
+    public class UsuarioController : BaseController
     {
         private UserManager<Usuario> _userManager;
 
@@ -29,15 +29,20 @@ namespace PortalAutenticacao.UI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Cadastrar()
+        {
             var nivelService = new NivelService();
             var niveis = nivelService.Listar();
-            ViewBag.Niveis = niveis;
-
-            return View(ViewBag);
+            
+            return View(niveis);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Salvar(CadastrarUsuarioViewModel viewModel)
+        public async Task<IActionResult> Cadastrar(CadastrarUsuarioViewModel viewModel)
         {
 
             var user = new Usuario
@@ -49,14 +54,13 @@ namespace PortalAutenticacao.UI.Controllers
                 Telefone = viewModel.Telefone
             };
 
+            await _userManager.CreateAsync(user);
+            var usuario = await _userManager.FindByEmailAsync(user.Email);
+            await _userManager.AddToRoleAsync(usuario, viewModel.Nivel.ToString());
 
-            var resultado = await _userManager.CreateAsync(user);
-            var findUser = await _userManager.FindByEmailAsync(user.Email);
+            ExibirMensagem("Usuário cadastrado com sucesso!");
 
-            var resultadoNivel = await _userManager.AddToRoleAsync(findUser, viewModel.Nivel.ToString());
-            
-
-            return View();
+            return RedirectToAction("Cadastrar");
         }
 
         [HttpGet]
@@ -68,19 +72,19 @@ namespace PortalAutenticacao.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
-            var EmailResult = _userManager.FindByEmailAsync(viewModel.Email);
-            var SenhaResult = _userManager.CheckPasswordAsync(EmailResult.Result, viewModel.Senha);
+            var usuario = await _userManager.FindByEmailAsync(viewModel.Email);
+            var isAuth = await _userManager.CheckPasswordAsync(usuario, viewModel.Senha);
 
-            //var identity = new ClaimsIdentity(new List<Claim> {
-            //    new Claim(ClaimTypes.Name, EmailResult.Result.Nome),
-            //    new Claim(ClaimTypes.NameIdentifier, EmailResult.Result.Email)
-            //}, CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!isAuth)
+            {
+                ExibirMensagem("Não foi possivel autenticar");
+                return RedirectToAction("Login");
+            }
 
-            var identity = await _userClaimsFactory.CreateAsync(EmailResult.Result);
-
+            var identity = await _userClaimsFactory.CreateAsync(usuario);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, identity, new AuthenticationProperties { IsPersistent = false }); ;
 
-            return View();
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -113,7 +117,6 @@ namespace PortalAutenticacao.UI.Controllers
 
             return Redirect(Url);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> ResetarSenha(string Token, string Email)

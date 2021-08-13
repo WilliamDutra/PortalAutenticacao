@@ -1,0 +1,56 @@
+﻿@using System.Linq;
+@model List<PortalAutenticacao.Entities.Nivel>;
+@{
+    ViewData["Title"] = "Cadastrar";
+}
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="bg-success">
+        <p class="text-center">@TempData["Mensagem"]</p>
+    </div>
+}
+
+<h1 class="text-info">Cadastrar Usuário</h1>
+
+<div class="container">
+    <form method="POST" action="/Usuario/Cadastrar">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Nome:</label>
+                <input type="text" class="form-control" name="Nome" id="Nome" />
+            </div>
+            <div class="col-md-6">
+                <label>Endereço:</label>
+                <input type="text" class="form-control" name="Endereco" id="Endereco" />
+            </div>
+            <div class="col-md-6">
+                <label>Telefone:</label>
+                <input type="text" class="form-control" name="Telefone" id="Telefone" />
+            </div>
+            <div class="col-md-4">
+                <label>E-mail:</label>
+                <input type="text" class="form-control" name="Email" id="Email" />
+            </div>
+            <div class="col-md-4">
+                <label>Senha:</label>
+                <input type="password" class="form-control" name="Senha" id="Senha" />
+            </div>
+            <div class="col-md-4">
+                <label>Nível de permissão:</label>
+                <select class="form-control" id="Nivel" name="Nivel">
+                    @foreach (var nivel in Model)
+                    {
+                        <option value="@nivel.IdNivel">@nivel.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <br />
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-success" value="Cadastrar" />
+            </div>
+        </div>
+    </form>
+</div>

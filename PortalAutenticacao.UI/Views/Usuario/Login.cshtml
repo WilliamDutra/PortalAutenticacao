@@ -3,10 +3,35 @@
     ViewData["Title"] = "Login";
 }
 
+@if (TempData["Mensagem"] != null)
+{
+    <div class="bg-success">
+        <p class="text-center">@TempData["Mensagem"]</p>
+    </div>
+}
+
 <h1>Login</h1>
 
-<form method="POST" action="/Usuario/Login">
-    <label>E-mail</label><input type="text" name="Email" id="Email" />
-    <label>Senha</label><input type="text" name="Senha" id="Senha" />
-    <input type="submit" value="Entrar"/>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-title">Login</div>
+            <div class="card-body">
+                <form method="POST" action="/Usuario/Login">
+                    <div class="col-md-12">
+                        <label>E-mail</label>
+                        <input type="text" class="form-control" name="Email" id="Email" />
+                    </div>
+                    <div class="col-md-12">
+                        <label>Senha</label>
+                        <input type="password" class="form-control" name="Senha" id="Senha" />
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" value="Entrar" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

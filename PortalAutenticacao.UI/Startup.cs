@@ -34,11 +34,7 @@ namespace PortalAutenticacao.UI
             // Configuração do Microsoft Identity
             services.AddIdentityCore<Usuario>(options =>
             {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 3;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
+
             })
            .AddClaimsPrincipalFactory<PortalAutenticacaoClaimsFactory>()
            .AddUserManager<PortalAutenticacaoUserManager>()

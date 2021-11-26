@@ -5,7 +5,7 @@ namespace PortalAutenticacao.Domain
 {
     public class Db
     {
-        private string strConnection = @"Data Source=PC-PC\SQLEXPRESS;Initial Catalog=PORTALAUTENTICACAO;Integrated Security=True;";
+        private string strConnection = @"Server=localhost,1433; Database=PortalAutenticacao; User=SA; Password=yourStrong(!)Password";
 
         public SqlConnection AbrirConexao => OpenConnection();
 

@@ -56,5 +56,19 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="01 - Tables" />
+    <Folder Include="02 - Stored Procedures" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="01 - Tables\UsuarioNivel.sql" />
+    <Build Include="01 - Tables\Nivel.sql" />
+    <Build Include="01 - Tables\Usuario.sql" />
+    <Build Include="02 - Stored Procedures\spListarUsuario.sql" />
+    <Build Include="02 - Stored Procedures\spSalvarUsuario.sql" />
+    <Build Include="02 - Stored Procedures\spListarNivel.sql" />
+    <Build Include="02 - Stored Procedures\spSalvarUsuarioNivel.sql" />
+    <Build Include="02 - Stored Procedures\spSalvarNivel.sql" />
+    <Build Include="02 - Stored Procedures\spListarUsuarioNivel.sql" />
+    <Build Include="02 - Stored Procedures\spAlterarUsuario.sql" />
   </ItemGroup>
 </Project>

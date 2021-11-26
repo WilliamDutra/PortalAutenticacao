@@ -16,7 +16,7 @@ namespace PortalAutenticacao.Entities
 
         public string Endereco { get; set; }
 
-        public string TokenResetSenha { get; set; }
+        public string PasswordResetToken { get; set; }
 
     }
 }

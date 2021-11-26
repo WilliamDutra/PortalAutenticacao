@@ -40,10 +40,10 @@ namespace PortalAutenticacao.Domain.Services
                     else
                         Parametros.Add("@EMAIL", DBNull.Value, DbType.String);
 
-                    if (!string.IsNullOrEmpty(entidade.TokenResetSenha))
-                        Parametros.Add("@TOKENSENHA", entidade.TokenResetSenha, DbType.String);
+                    if (!string.IsNullOrEmpty(entidade.PasswordResetToken))
+                        Parametros.Add("@PASSWORDRESETTOEKN", entidade.PasswordResetToken, DbType.String);
                     else
-                        Parametros.Add("@TOKENSENHA", DBNull.Value, DbType.String);
+                        Parametros.Add("@PASSWORDRESETTOEKN", DBNull.Value, DbType.String);
 
 
                     Parametros.Add("@ID", entidade.UsuarioId, DbType.Int32);

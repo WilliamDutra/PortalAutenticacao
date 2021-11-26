@@ -16,7 +16,8 @@ AS
 			Email, 
 			Senha, 
 			Telefone, 
-			Endereco 
+			Endereco,
+			PasswordResetToken
 		FROM 
 			Usuario 
 		WHERE

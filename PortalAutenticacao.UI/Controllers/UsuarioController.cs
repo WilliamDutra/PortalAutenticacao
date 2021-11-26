@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PortalAutenticacao.Domain.Helpers;
 using PortalAutenticacao.Domain.Services;
 using PortalAutenticacao.Entities;
 using PortalAutenticacao.UI.Autenticacao;
@@ -110,12 +111,16 @@ namespace PortalAutenticacao.UI.Controllers
 
             var escapeToken = System.Web.HttpUtility.UrlEncode(TokenAuth);
 
-            var Url = $"https://localhost:44341/Usuario/ResetarSenha?Token={escapeToken}?Email={esqueciMinhaSenhaVeiwModel.Email}";
+            var Url = $"https://localhost:44341/Usuario/ResetarSenha?Token={escapeToken}&Email={esqueciMinhaSenhaVeiwModel.Email}";
 
             var usuarioService = new UsuarioService();
-            usuarioService.Alterar(new Usuario { TokenResetSenha = TokenAuth, UsuarioId = EmailResult.UsuarioId });
+            usuarioService.Alterar(new Usuario { PasswordResetToken = TokenAuth, UsuarioId = EmailResult.UsuarioId });
 
-            return Redirect(Url);
+            var mail = new MailHelper();
+            mail.EnviarEmail("rodneylatariaferrugem@gmail.com", "Recuperação de Senha", $"Click no link para resetar sua senha: {Url}");
+
+
+            return Redirect("/Usuario/Login");
         }
 
         [HttpGet]

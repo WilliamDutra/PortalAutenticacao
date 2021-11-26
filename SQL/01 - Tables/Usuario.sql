@@ -8,5 +8,6 @@ CREATE TABLE Usuario (
 	Email VARCHAR(30) NOT NULL,
 	Senha VARCHAR(100) NOT NULL,
 	Telefone VARCHAR(20) NULL,
-	Endereco VARCHAR(100) NULL
+	Endereco VARCHAR(100) NULL,
+	PasswordResetToken VARCHAR(255) NULL
 );

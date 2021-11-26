@@ -47,8 +47,12 @@ namespace PortalAutenticacao.UI.Autenticacao
                 var usuarioService = new UsuarioService();
                 var usuario = usuarioService.Buscar(new Usuario { Email = user.Email });
 
-                if(usuario.TokenResetSenha == token)
+                if(usuario.PasswordResetToken == token)
                 {
+                    usuario.Senha = newPassword;
+                    usuario.PasswordResetToken = "EM BRANCO";
+                    usuarioService.Alterar(usuario);
+
                     return Task.FromResult(IdentityResult.Success);
                 }
                 else
@@ -86,5 +90,6 @@ namespace PortalAutenticacao.UI.Autenticacao
                 throw;
             }
         }
+
     }
 }

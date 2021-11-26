@@ -1,0 +1,13 @@
+﻿IF OBJECT_ID('spSalvarNivel') IS NOT NULL
+	DROP PROCEDURE spSalvarNivel
+GO
+CREATE PROCEDURE spSalvarNivel (
+	@NOME VARCHAR(100),
+	@DESCRICAO VARCHAR(255)
+)
+AS
+	BEGIN
+
+		INSERT INTO Nivel ( Nome, Descricao ) VALUES ( @NOME, @DESCRICAO )
+
+	END

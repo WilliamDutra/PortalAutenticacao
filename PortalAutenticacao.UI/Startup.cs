@@ -30,7 +30,7 @@ namespace PortalAutenticacao.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             // Configuração do Microsoft Identity
             services.AddIdentityCore<Usuario>(options =>
             {
@@ -60,7 +60,7 @@ namespace PortalAutenticacao.UI
                 options.SlidingExpiration = true;
             });
 
-
+            services.AddScoped<IPasswordHasher<Usuario>, PortalAutenticacaoSenhaHash>();
             services.AddScoped<IUserClaimsPrincipalFactory<Usuario>, PortalAutenticacaoClaimsFactory>();
 
             services.AddControllersWithViews();

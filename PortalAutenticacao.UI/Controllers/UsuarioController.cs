@@ -55,7 +55,7 @@ namespace PortalAutenticacao.UI.Controllers
                 Telefone = viewModel.Telefone
             };
 
-            await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user, user.Senha);
             var usuario = await _userManager.FindByEmailAsync(user.Email);
             await _userManager.AddToRoleAsync(usuario, viewModel.Nivel.ToString());
 

@@ -12,9 +12,13 @@ namespace PortalAutenticacao.UI.Autenticacao
 {
     public class PortalAutenticacaoUserManager : UserManager<Usuario>
     {
+        private readonly IPasswordHasher<Usuario> _PasswordHasher;
+        private readonly IUserPasswordStore<Usuario> _UserPasswordStore;
+
         public PortalAutenticacaoUserManager(IUserStore<Usuario> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<Usuario> passwordHasher, IEnumerable<IUserValidator<Usuario>> userValidators, IEnumerable<IPasswordValidator<Usuario>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Usuario>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-
+            _UserPasswordStore = Store as IUserPasswordStore<Usuario>;
+            _PasswordHasher = passwordHasher;
         }
 
         public override Task<Usuario> FindByEmailAsync(string email)
@@ -33,11 +37,22 @@ namespace PortalAutenticacao.UI.Autenticacao
             }
         }
 
-        public override Task<bool> CheckPasswordAsync(Usuario user, string password)
+        public override async Task<bool> CheckPasswordAsync(Usuario user, string password)
         {
-            if (user.Senha == password)
-                return Task.FromResult(true);
-            return Task.FromResult(false);
+
+            PasswordVerificationResult isValid = await VerifyPasswordAsync(_UserPasswordStore, user, password);
+
+            if (isValid == PasswordVerificationResult.Success)
+                return true;
+            return false;
+
+        }
+
+
+        protected override Task<PasswordVerificationResult> VerifyPasswordAsync(IUserPasswordStore<Usuario> store, Usuario user, string password)
+        {
+            var isValid = _PasswordHasher.VerifyHashedPassword(user, password, user.Senha);
+            return Task.FromResult(isValid);
         }
 
         public override Task<IdentityResult> ResetPasswordAsync(Usuario user, string token, string newPassword)
@@ -91,5 +106,33 @@ namespace PortalAutenticacao.UI.Autenticacao
             }
         }
 
+        
+
+    }
+
+    public class PassHash : IPasswordHasher<Usuario>
+    {
+        public string HashPassword(Usuario user, string password)
+        {
+            return ReversePassword(password);
+        }
+
+        public PasswordVerificationResult VerifyHashedPassword(Usuario user, string hashedPassword, string providedPassword)
+        {
+            if (hashedPassword == ReversePassword(providedPassword))
+            {
+                return PasswordVerificationResult.Success;
+            }
+
+            return PasswordVerificationResult.Failed;
+        }
+
+        private string ReversePassword(string value)
+        {
+            // This is not a secure way to store a password!
+            char[] charArray = value.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
     }
 }

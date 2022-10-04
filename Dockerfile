@@ -9,7 +9,7 @@ ENV ASPNETCORE_URLS=http://+:80
 RUN dotnet restore ./PortalAutenticacao.UI/PortalAutenticacao.UI.csproj
 RUN dotnet publish ./PortalAutenticacao.UI/PortalAutenticacao.UI.csproj -c Release -o out
 
-COPY ./PortalAutenticacao.UI/bin/Release/netcoreapp3.1/publish/ .
+COPY ./PortalAutenticacao.UI/bin/Release/netcoreapp3.1/publish/ /portalautenticacao
 ENTRYPOINT ["dotnet", "PortalAutenticacao.UI.dll"]
 
 EXPOSE 80
